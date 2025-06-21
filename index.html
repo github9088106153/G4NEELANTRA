@@ -19,7 +19,7 @@
 
 
 <style type="text/css">
-============================================================================================ */
+
 
 @font-face {
   font-weight: 400;
@@ -80,6 +80,40 @@
 
   src: url('https://cdn.loom.com/assets/fonts/inter/Inter-UI-BlackItalic.woff2') format('woff2');
 }</style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<style>
+  #mini-chatbot {
+    position: fixed; bottom: 20px; right: 20px;
+    width: 300px; background: white; border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-family: Arial; display: none; flex-direction: column;
+    overflow: hidden; z-index: 9999;
+  }
+  #mini-chatbot-header {
+    background: #0057A3; color: white; padding: 10px;
+    font-weight: bold; text-align: center;
+  }
+  #mini-chatbot-messages {
+    height: 200px; overflow-y: auto; padding: 10px; font-size: 14px;
+  }
+  #mini-chatbot input {
+    padding: 10px; border: none; width: 70%;
+  }
+  #mini-chatbot button {
+    width: 30%; border: none; background: #0057A3; color: white; padding: 10px;
+  }
+  #chat-toggle-btn {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #0057A3; color: white; padding: 10px 15px;
+    border: none; border-radius: 50px; cursor: pointer; z-index: 9999;
+  }
+</style>
+
+
 </head>
 
 <body data-gr-c-s-loaded="true">
@@ -489,6 +523,33 @@
   <img src="go_to_top.png">
 </a>
 
+<!-- Floating Chat Button -->
+<button id="chat-toggle-btn" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot Popup -->
+<div id="mini-chatbot">
+  <div id="mini-chatbot-header" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background-color: #007BFF; color: white; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+  <button onclick="toggleChat()" style="
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+  ">←</button>
+  <span style="font-weight: bold;">Disaster Bot</span>
+  <span style="width: 40px;"></span> <!-- for layout symmetry -->
+</div>
+
+  <div id="mini-chatbot-messages"></div>
+  <div class="chatbot-input-container">
+    <input type="text" id="chatbot-input" placeholder="Ask me...">
+    <button onclick="sendToChatbot()">Send</button>
+  </div>
+</div>
+
+
 <!-- modal -->
 <div id="myModal" class="modal fade ">
     <div class="modal-dialog" >
@@ -527,6 +588,50 @@
 <script src="custom.js"></script>
 
       
+<script>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBljlXEq6FlJzspuEvxtlwq5YI9bxnwPYI",
+    authDomain: "neelantra-3eb7d.firebaseapp.com",
+    databaseURL: "https://neelantra-3eb7d-default-rtdb.firebaseio.com",
+    projectId: "neelantra-3eb7d",
+    storageBucket: "neelantra-3eb7d.appspot.com",
+    messagingSenderId: "733657494531",
+    appId: "1:733657494531:web:04c2b887e7a765828b0a36"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function toggleChat() {
+    const chat = document.getElementById("mini-chatbot");
+    chat.style.display = chat.style.display === "none" ? "flex" : "none";
+  }
+
+  function addChatMessage(sender, msg) {
+    const box = document.getElementById("mini-chatbot-messages");
+    const line = document.createElement("div");
+    line.innerHTML = `<b>${sender}:</b> ${msg}`;
+    box.appendChild(line);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function sendToChatbot() {
+    const input = document.getElementById("chatbot-input");
+    const question = input.value.trim();
+    if (!question) return;
+    addChatMessage("You", question);
+    input.value = "";
+
+    db.ref("faq").once("value").then(snapshot => {
+      const data = snapshot.val() || {};
+      const answer = data[question] || "Sorry, I don’t have the answer to that yet.";
+      addChatMessage("Bot", answer);
+    });
+  }
+ 
+
+</script>
+
 
 
 </body>
