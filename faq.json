@@ -1,18 +1,122 @@
-{
-  "faq": {
-    "what is an earthquake": "A sudden shaking of the ground caused by movement along fault lines or volcanic activity.",
-    "what to do during an earthquake": "Drop, cover, and hold on. Stay away from windows and heavy furniture.",
-    "what is a flood": "An overflow of water onto normally dry land, usually caused by heavy rain or river overflow.",
-    "what to do during a flood": "Move to higher ground, avoid walking or driving through water, and listen to official updates.",
-    "what is a cyclone": "A large rotating storm system with strong winds and heavy rain, also called a hurricane or typhoon.",
-    "how to stay safe during a cyclone": "Stay indoors, away from windows, and keep emergency supplies ready.",
-    "what is a tsunami": "A series of large ocean waves caused by underwater earthquakes or volcanic eruptions.",
-    "how to respond to a tsunami warning": "Move to high ground immediately and stay there until authorities declare it safe.",
-    "what is a wildfire": "An uncontrolled fire that spreads rapidly in forests or grasslands.",
-    "how to stay safe during a wildfire": "Evacuate early, wear a mask, and avoid breathing in smoke.",
-    "what is a landslide": "The sudden movement of rocks and soil down a slope due to gravity, often triggered by rain or earthquakes.",
-    "how to prepare for a landslide": "Avoid building on steep slopes, have emergency kits ready, and stay alert during heavy rain.",
-    "what should be in a disaster emergency kit": "Water, food, flashlight, radio, batteries, first aid kit, medicines, important documents.",
-    "who to call in a disaster emergency": "Contact local disaster response agencies or emergency services like 112 or 911."
+ [
+    {
+      "question": "What is an earthquake?",
+      "answer": "An earthquake is a sudden and violent shaking of the ground, often caused by movement of tectonic plates beneath the Earth's surface."
+    },
+    {
+      "question": "What is a tsunami?",
+      "answer": "A tsunami is a large ocean wave usually caused by an underwater earthquake or a volcanic eruption. It can travel great distances and flood coastal areas."
+    },
+    {
+      "question": "What to do during an earthquake warning?",
+      "answer": "Stay calm. If indoors, drop, cover, and hold on. After shaking stops, evacuate the building using stairs, not elevators. Move to an open area away from buildings and power lines."
+    },
+    {
+      "question": "What to do during a tsunami warning?",
+      "answer": "Move to higher ground immediately. Stay away from the coast, rivers, and estuaries. Do not return until authorities declare it safe."
+    },
+    {
+      "question": "How to give first aid during disasters?",
+      "answer": "Check for responsiveness and breathing. Stop any bleeding with pressure. Immobilize broken bones. Provide CPR if trained and necessary. Call emergency services."
+    },
+    {
+      "question": "How to prepare for an earthquake?",
+      "answer": "Secure heavy items in your home. Know your evacuation plan. Keep an emergency kit ready with food, water, flashlight, and important documents."
+    },
+    {
+      "question": "How to prepare for a tsunami?",
+      "answer": "Know the evacuation routes. Do not live in low-lying coastal areas if possible. Prepare a disaster kit and stay updated with local alerts."
+    },
+    {
+      "question": "after an earthquake?",
+      "answer": "Check yourself and others for injuries. Turn off gas and electricity if you suspect leaks. Avoid using phones unless necessary. Be prepared for aftershocks."
+    },
+    {
+      "question": "after a tsunami?",
+      "answer": "Stay tuned to local alerts. Avoid floodwaters. Check for structural damage before entering buildings. Help those in need if you can do so safely."
+    },
+  {
+    "question": "What should I do during an earthquake?",
+    "answer": "Drop, cover, and hold on. Stay indoors until the shaking stops. Stay away from windows and tall furniture."
+  },
+  {
+    "question": "How can I prepare for a disaster?",
+    "answer": "Create a family emergency plan, pack a disaster kit, keep important documents safe, and know local emergency contacts."
+  },
+  {
+    "question": "What items should I include in an emergency kit?",
+    "answer": "Water, non-perishable food, flashlight, batteries, first aid kit, medicines, masks, cash, important documents, and a radio."
+  },
+  {
+    "question": "How can I stay informed during a disaster?",
+    "answer": "Listen to official alerts on the radio, TV, or phone. Follow government social media and download warning apps."
+  },
+  {
+    "question": "What should I do if my area is flooding?",
+    "answer": "Move to higher ground, avoid walking or driving in floodwater, and unplug electrical items if safe to do so."
+  },
+  {
+    "question": "Is tap water safe after a flood?",
+    "answer": "No. Floodwater may contaminate the supply. Drink only bottled, boiled, or treated water until authorities say it's safe."
+  },
+  {
+    "question": "What is the safest place during a cyclone or hurricane?",
+    "answer": "Stay in a secure room without windows. Keep your emergency kit nearby. Don’t go outside until it's declared safe."
+  },
+  {
+    "question": "What should I do during a fire at home?",
+    "answer": "Evacuate immediately. Use stairs, not elevators. Call emergency services. Do not go back inside for any belongings."
+  },
+  {
+    "question": "How do I help someone who is injured during a disaster?",
+    "answer": "Stay calm. Call for help. Apply pressure to bleeding wounds, keep the person warm, and provide CPR if trained."
+  },
+  {
+    "question": "What should I do during a landslide?",
+    "answer": "Move away from the path quickly. Stay alert to sounds of moving debris. Do not return until officials say it's safe."
+  },
+  {
+    "question": "What is a tsunami and how can I stay safe?",
+    "answer": "A tsunami is a series of large waves caused by underwater activity. If the sea recedes suddenly, move to high ground fast."
+  },
+  {
+    "question": "What causes wildfires and how can I prevent them?",
+    "answer": "Dry weather, human negligence, and lightning can start fires. Avoid open flames and follow fire bans during dry seasons."
+  },
+  {
+    "question": "How can I help children feel safe during disasters?",
+    "answer": "Stay calm, explain simply what’s happening, and keep their routine as normal as possible. Reassure and comfort them."
+  },
+  {
+    "question": "What should I do if I am trapped under debris?",
+    "answer": "Try to stay calm. Tap on a pipe or wall to signal rescuers. Cover your mouth to avoid dust. Do not light a match."
+  },
+  {
+    "question": "How do I protect pets during a disaster?",
+    "answer": "Include pet food, water, and documents in your emergency kit. Keep them in a safe carrier or room with ventilation."
+  },
+  {
+    "question": "What is the importance of a disaster plan?",
+    "answer": "A plan helps you react quickly, reduces panic, ensures safety, and improves your chances of survival."
+  },
+  {
+    "question": "Can mobile phones work during a disaster?",
+    "answer": "Mobile networks may fail. Use SMS or offline apps. Have emergency contact numbers written down."
+  },
+  {
+    "question": "How can I treat minor burns at home?",
+    "answer": "Cool the burn with running water for 10 minutes. Cover with a clean cloth. Do not apply ice, butter, or toothpaste."
+  },
+  {
+    "question": "What should I do after a disaster hits?",
+    "answer": "Check for injuries, stay informed via radio, avoid damaged areas, and follow official instructions."
+  },
+  {
+    "question": "Why is mental health important after a disaster?",
+    "answer": "Disasters can cause stress, fear, or trauma. Talk to someone, rest, and seek support if needed."
+  },
+  {
+    "question": "How can I volunteer during a disaster?",
+    "answer": "Contact local authorities or NGOs. Do not enter affected areas unless trained. Help spread accurate information."
   }
-}
+]
