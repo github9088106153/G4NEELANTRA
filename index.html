@@ -86,32 +86,44 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <style>
-  #mini-chatbot {
-    position: fixed; bottom: 20px; right: 20px;
-    width: 300px; background: white; border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    font-family: Arial; display: none; flex-direction: column;
-    overflow: hidden; z-index: 9999;
-  }
-  #mini-chatbot-header {
-    background: #0057A3; color: white; padding: 10px;
-    font-weight: bold; text-align: center;
-  }
-  #mini-chatbot-messages {
-    height: 200px; overflow-y: auto; padding: 10px; font-size: 14px;
-  }
-  #mini-chatbot input {
-    padding: 10px; border: none; width: 70%;
-  }
-  #mini-chatbot button {
-    width: 30%; border: none; background: #0057A3; color: white; padding: 10px;
-  }
-  #chat-toggle-btn {
-    position: fixed; bottom: 20px; right: 20px;
-    background: #0057A3; color: white; padding: 10px 15px;
-    border: none; border-radius: 50px; cursor: pointer; z-index: 9999;
-  }
-</style>
+   /* === Smart Offline Chatbot === */
+#smart-chat-btn{
+  position:fixed;bottom:20px;right:20px;z-index:9999;
+  width:60px;height:60px;border-radius:50%;
+  border:none;background:#0066cc;color:#fff;
+  font-size:28px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+#smart-chat-box{
+  position:fixed;bottom:90px;right:20px;z-index:9998;
+  width:320px;max-height:460px;display:flex;flex-direction:column;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(10px);
+  border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.25);
+}
+/* force‑hide box whenever the class is present */
+#smart-chat-box.smart-hidden { display: none !important; }
+
+#smart-chat-header{
+  background:#0066cc;color:#fff;padding:10px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-weight:600;
+}
+#smart-chat-header button{
+  background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer;
+}
+#smart-chat-messages{flex:1;overflow-y:auto;padding:12px;font-size:14px;}
+.smart-msg{margin:6px 0;line-height:1.4;}
+.smart-msg.user{color:#0066cc;text-align:right;}
+.smart-msg.bot {color:#222;text-align:left;}
+#smart-chat-input-row{display:flex;border-top:1px solid #ccc;}
+#smart-chat-input{
+  flex:1;border:none;padding:10px;font-size:14px;background:transparent;outline:none;
+}
+#smart-chat-send{
+  border:none;background:#0066cc;color:#fff;padding:10px 14px;cursor:pointer;font-size:16px;
+}
+/* === end chatbot CSS === */
+
+  </style>
 
 
 </head>
@@ -523,29 +535,18 @@
   <img src="go_to_top.png">
 </a>
 
-<!-- Floating Chat Button -->
-<button id="chat-toggle-btn" onclick="toggleChat()">💬</button>
 
-<!-- Chatbot Popup -->
-<div id="mini-chatbot">
-  <div id="mini-chatbot-header" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background-color: #007BFF; color: white; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-  <button onclick="toggleChat()" style="
-    background: transparent;
-    color: white;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
-  ">←</button>
-  <span style="font-weight: bold;">Disaster Bot</span>
-  <span style="width: 40px;"></span> <!-- for layout symmetry -->
-</div>
+  <button id="smart-chat-btn" aria-label="Chat">💬</button>
 
-  <div id="mini-chatbot-messages"></div>
-  <div class="chatbot-input-container">
-    <input type="text" id="chatbot-input" placeholder="Ask me...">
-    <button onclick="sendToChatbot()">Send</button>
+<div id="smart-chat-box" class="smart-hidden">
+  <div id="smart-chat-header">
+    <span>Neelantra Bot</span>
+    <button id="smart-chat-close" aria-label="Close">← Back</button>
+  </div>
+  <div id="smart-chat-messages"></div>
+  <div id="smart-chat-input-row">
+    <input id="smart-chat-input" type="text" placeholder="Ask me anything…">
+    <button id="smart-chat-send">➤</button>
   </div>
 </div>
 
@@ -587,52 +588,76 @@
 
 <script src="custom.js"></script>
 
-      
+<!-- string‑similarity library -->
+<script src="https://cdn.jsdelivr.net/npm/string-similarity/umd/string-similarity.min.js"></script>
+
+<!-- Smart‑offline chatbot logic -->
 <script>
-  // Your Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBljlXEq6FlJzspuEvxtlwq5YI9bxnwPYI",
-    authDomain: "neelantra-3eb7d.firebaseapp.com",
-    databaseURL: "https://neelantra-3eb7d-default-rtdb.firebaseio.com",
-    projectId: "neelantra-3eb7d",
-    storageBucket: "neelantra-3eb7d.appspot.com",
-    messagingSenderId: "733657494531",
-    appId: "1:733657494531:web:04c2b887e7a765828b0a36"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+document.addEventListener("DOMContentLoaded", () => {
 
-  function toggleChat() {
-    const chat = document.getElementById("mini-chatbot");
-    chat.style.display = chat.style.display === "none" ? "flex" : "none";
+  /* ╔═══ Grab elements ═══ */
+  const btn   = document.getElementById("smart-chat-btn"),
+        box   = document.getElementById("smart-chat-box"),
+        close = document.getElementById("smart-chat-close"),
+        send  = document.getElementById("smart-chat-send"),
+        input = document.getElementById("smart-chat-input"),
+        log   = document.getElementById("smart-chat-messages");
+
+  /* ╔═══ Ensure box starts hidden ═══ */
+  box.classList.add("smart-hidden");   // if not already in HTML
+
+  /* ╔═══ Toggle open/close ═══ */
+  function toggleChat () {
+    box.classList.toggle("smart-hidden");
+    if (!box.classList.contains("smart-hidden")) input.focus();
+  }
+  btn  .addEventListener("click", toggleChat);
+  close.addEventListener("click", toggleChat);
+
+  /* ╔═══ Load FAQ file ═══ */
+  let FAQ_DATA = [];
+  fetch("faq.json")
+    .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
+    .then(data => { FAQ_DATA = data; console.log("FAQ loaded:", FAQ_DATA.length, "items"); })
+    .catch(err => console.error("Could not load faq.json:", err));
+
+  /* ╔═══ Send / Enter key ═══ */
+  send .addEventListener("click", handleSend);
+  input.addEventListener("keypress", e => { if (e.key === "Enter") handleSend(); });
+
+  /* ╔═══ Helper: render message ═══ */
+  function addMsg (role, text) {
+    const div = document.createElement("div");
+    div.className = "smart-msg " + role;
+    div.textContent = (role === "user" ? "You: " : "Bot: ") + text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
   }
 
-  function addChatMessage(sender, msg) {
-    const box = document.getElementById("mini-chatbot-messages");
-    const line = document.createElement("div");
-    line.innerHTML = `<b>${sender}:</b> ${msg}`;
-    box.appendChild(line);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function sendToChatbot() {
-    const input = document.getElementById("chatbot-input");
-    const question = input.value.trim();
-    if (!question) return;
-    addChatMessage("You", question);
+  /* ╔═══ Handle Send ═══ */
+  function handleSend () {
+    const q = input.value.trim();
+    if (!q) return;
+    addMsg("user", q);
     input.value = "";
-
-    db.ref("faq").once("value").then(snapshot => {
-      const data = snapshot.val() || {};
-      const answer = data[question] || "Sorry, I don’t have the answer to that yet.";
-      addChatMessage("Bot", answer);
-    });
+    addMsg("bot", "Thinking…");
+    setTimeout(() => {
+      const ans = findBestAnswer(q);
+      log.lastChild.textContent = "Bot: " + ans;
+    }, 300);
   }
- 
 
+  /* ╔═══ Semantic best‑match ═══ */
+  function findBestAnswer (userText) {
+    if (!FAQ_DATA.length) return "FAQ not loaded yet.";
+    const questions = FAQ_DATA.map(o => o.question);
+    const best = stringSimilarity.findBestMatch(userText, questions).bestMatch;
+    return best.rating > 0.4
+         ? FAQ_DATA.find(o => o.question === best.target).answer
+         : "Sorry, I don't have an answer for that yet.";
+  }
+});
 </script>
-
-
 
 </body>
 
